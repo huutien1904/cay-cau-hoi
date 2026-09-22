@@ -1,0 +1,6 @@
+# Giữ định dạng xuống dòng kiểu Linux cho script chạy trên VPS
+*.sh text eol=lf
+*.conf text eol=lf
+# File nhị phân
+*.glb binary
+*.png binary

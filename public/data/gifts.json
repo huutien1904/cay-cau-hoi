@@ -1,0 +1,10 @@
+[
+  { "id": "voucher-50", "name": "Voucher mua sắm 50.000đ", "icon": "🎟️", "weight": 20, "description": "Dùng khi mua sắm tại các cửa hàng đối tác." },
+  { "id": "coffee", "name": "Voucher cà phê", "icon": "☕", "weight": 20, "description": "Một ly cà phê tuỳ chọn cho ngày làm việc thêm hứng khởi." },
+  { "id": "keychain", "name": "Móc khoá chiếc lá phát sáng", "icon": "🍃", "weight": 16, "description": "Móc khoá dạ quang hình chiếc lá của Cây Câu Hỏi." },
+  { "id": "notebook", "name": "Sổ tay Cây Câu Hỏi", "icon": "📒", "weight": 15, "description": "Sổ tay bìa cứng để ghi lại những ý tưởng mới." },
+  { "id": "cap", "name": "Mũ lưỡi trai", "icon": "🧢", "weight": 10, "description": "Mũ lưỡi trai thêu logo Cây Câu Hỏi." },
+  { "id": "tshirt", "name": "Áo phông", "icon": "👕", "weight": 8, "description": "Áo phông cotton in hình cây phát sáng." },
+  { "id": "bottle", "name": "Bình giữ nhiệt", "icon": "🥤", "weight": 8, "description": "Bình giữ nhiệt inox 500 ml." },
+  { "id": "earbuds", "name": "Tai nghe không dây", "icon": "🎧", "weight": 3, "description": "Giải đặc biệt — chúc mừng bạn thật may mắn!" }
+]

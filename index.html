@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0d14" />
+    <meta name="description" content="Cây Câu Hỏi — chạm vào từng chiếc lá phát sáng để trả lời câu hỏi, thắp sáng cây và nhận quà." />
+    <title>Cây Câu Hỏi</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0d14'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2322d3ee'/%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" href="/models/cay-sang-kien-no-leaves.glb" as="fetch" type="model/gltf-binary" crossorigin />
+    <link rel="preload" href="/data/questions.json" as="fetch" type="application/json" crossorigin />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <canvas id="webgl" class="webgl" role="img" aria-label="Cây Câu Hỏi 3D — kéo để xoay, chụm hai ngón hoặc cuộn để phóng to, bấm vào chiếc lá sáng để mở câu hỏi"></canvas>
+
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- HUD -->
+    <div class="hud" data-hud>
+      <header class="hud__top">
+        <p class="eyebrow" data-reveal>Thử thách kiến thức</p>
+        <h1 class="hud__title" data-reveal>Cây Câu Hỏi</h1>
+        <p class="hud__subtitle" data-reveal>Chạm vào một chiếc lá sáng để mở câu hỏi. Trả lời đúng để thắp sáng lá và nhận quà.</p>
+        <div class="scoreboard" data-reveal>
+          <dl class="stats" data-stats>
+            <div class="stat">
+              <dt class="stat__label">Số câu hỏi</dt>
+              <dd class="stat__value" data-stat="total">0</dd>
+            </div>
+            <div class="stat">
+              <dt class="stat__label">Đã trả lời đúng</dt>
+              <dd class="stat__value" data-stat="correct">0</dd>
+            </div>
+          </dl>
+          <div class="progress-track" data-progress-track role="img" aria-label="Tiến độ trả lời">
+            <span class="progress-track__correct"></span>
+            <span class="progress-track__wrong"></span>
+          </div>
+        </div>
+      </header>
+
+      <footer class="hud__bottom">
+        <p class="hint" data-reveal data-hint>
+          <svg class="hint__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+            <circle cx="12" cy="12" r="3.2" />
+          </svg>
+          <span data-hint-text>Kéo để xoay · Cuộn để phóng to · Bấm vào lá để trả lời</span>
+        </p>
+      </footer>
+    </div>
+
+    <!-- Nút góc phải: túi quà & chơi lại -->
+    <div class="hud-actions" data-reveal>
+      <button class="icon-button hud-actions__bag" type="button" data-bag-open aria-label="Xem túi quà">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1.5" /><path d="M3 7h18v3H3zM12 7v13M12 7c-2-3-6-3-5 0M12 7c2-3 6-3 5 0" /></svg>
+        <span class="hud-actions__count" data-bag-count hidden>0</span>
+      </button>
+      <button class="icon-button" type="button" data-reset aria-label="Chơi lại từ đầu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66" /><path d="M4 4v4h4" /></svg>
+      </button>
+    </div>
+
+    <div class="tooltip" data-tooltip role="tooltip"></div>
+
+    <!-- Panel câu hỏi -->
+    <aside class="panel" data-panel aria-labelledby="panel-title" hidden>
+      <button type="button" class="panel__close" data-panel-close aria-label="Đóng câu hỏi">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+      <div class="panel__body" data-panel-body></div>
+    </aside>
+
+    <!-- Modal: quà, túi quà, chơi lại, hoàn thành -->
+    <div class="modal" data-modal hidden>
+      <div class="modal__card" data-modal-card role="dialog" aria-modal="true" aria-labelledby="modal-title"></div>
+    </div>
+
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+    <!-- Onboarding lần đầu -->
+    <div class="onboard" data-onboard role="dialog" aria-modal="true" aria-labelledby="onboard-title" hidden>
+      <div class="onboard__card">
+        <p class="eyebrow">Chào mừng</p>
+        <h2 class="onboard__title" id="onboard-title">Cây Câu Hỏi</h2>
+        <p class="onboard__text">Mỗi chiếc lá phát sáng trên cây là một câu hỏi với 4 đáp án. Mỗi câu chỉ có một lượt trả lời — trả lời sai thì lá sẽ bị khoá.</p>
+        <ul class="onboard__tips" data-onboard-tips></ul>
+        <button type="button" class="button-primary" data-onboard-start>Bắt đầu chơi</button>
+      </div>
+    </div>
+
+    <!-- Màn tải -->
+    <div class="loader" data-loader role="status" aria-live="polite">
+      <div class="loader__inner">
+        <div class="loader__seed" aria-hidden="true"></div>
+        <p class="loader__title">Cây Câu Hỏi</p>
+        <div class="loader__bar"><span data-progress-bar></span></div>
+        <p class="loader__meta">
+          <span data-loader-status>Đang tải trải nghiệm…</span>
+          <span class="loader__value" data-progress-value>0%</span>
+        </p>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="noscript">Trải nghiệm 3D này cần bật JavaScript và WebGL.</p>
+    </noscript>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
