@@ -1,0 +1,36 @@
+# Dịch vụ systemd cho máy chủ CMS của Cây Câu Hỏi.
+# Cài đặt (bằng tài khoản có sudo):
+#   sudo cp /home/caycauhoi/app/deploy/caycauhoi-cms.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now caycauhoi-cms
+
+[Unit]
+Description=Cay Cau Hoi CMS (API quan tri cau hoi & qua)
+After=network.target
+
+[Service]
+Type=simple
+User=caycauhoi
+Group=caycauhoi
+WorkingDirectory=/home/caycauhoi/app
+Environment=NODE_ENV=production
+Environment=NODE_VERSION=22
+Environment=CMS_PORT=4310
+Environment=CMS_CONTENT_DIR=/var/www/caycauhoi/data
+Environment=CMS_PRIVATE_DIR=/home/caycauhoi/.caycauhoi-cms
+# nvm-exec nạp Node do nvm cài cho user caycauhoi.
+ExecStart=/home/caycauhoi/.nvm/nvm-exec node server/index.js
+Restart=on-failure
+RestartSec=3
+
+# Giới hạn tài nguyên để không ảnh hưởng các dự án khác trên VPS.
+MemoryMax=150M
+CPUQuota=50%
+
+# Tăng cường bảo mật.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

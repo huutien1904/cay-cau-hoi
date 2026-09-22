@@ -15,8 +15,8 @@
   --color-correct: #34d399;
   --color-wrong: #f87171;
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
 
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -160,9 +160,11 @@ button:disabled {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* Lớp tối nhẹ sau khối tiêu đề + số liệu để chữ luôn dễ đọc trên nền thành phố. */
   background:
-    radial-gradient(ellipse 80% 70% at 50% 45%, transparent 55%, rgba(4, 6, 10, 0.55) 100%),
-    linear-gradient(to bottom, rgba(10, 13, 20, 0.55) 0%, transparent 22%, transparent 78%, rgba(10, 13, 20, 0.6) 100%);
+    radial-gradient(ellipse 44% 50% at 0% 0%, rgba(6, 3, 16, 0.8) 0%, rgba(6, 3, 16, 0.45) 55%, transparent 100%),
+    radial-gradient(ellipse 80% 70% at 50% 45%, transparent 55%, rgba(4, 2, 12, 0.55) 100%),
+    linear-gradient(to bottom, rgba(6, 3, 16, 0.5) 0%, transparent 22%, transparent 78%, rgba(6, 3, 16, 0.6) 100%);
 }
 
 [data-reveal] {
@@ -1086,6 +1088,13 @@ button:disabled {
 @media (max-width: 720px) {
   :root {
     --gutter: 16px;
+  }
+
+  /* Trên điện thoại khối chữ trải hết bề ngang: làm tối dải trên cùng. */
+  .vignette {
+    background:
+      linear-gradient(to bottom, rgba(6, 3, 16, 0.85) 0%, rgba(6, 3, 16, 0.62) 24%, transparent 42%, transparent 80%, rgba(6, 3, 16, 0.6) 100%),
+      radial-gradient(ellipse 90% 70% at 50% 50%, transparent 60%, rgba(4, 2, 12, 0.5) 100%);
   }
 
   .hud__top {

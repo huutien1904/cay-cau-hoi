@@ -256,7 +256,7 @@ export class Scene3D {
   }
 
   getRestPose() {
-    return { radius: this.restDistance, phi: 1.33, theta: 0.35 };
+    return { radius: this.restDistance, phi: 1.46, theta: 0.35 };
   }
 
   getIntroPose() {
@@ -337,7 +337,7 @@ export class Scene3D {
     const offset = _offset.copy(this.camera.position).sub(this.controls.target);
     _endSpherical.setFromVector3(offset);
     _endSpherical.radius = this.restDistance;
-    _endSpherical.phi = THREE.MathUtils.clamp(_endSpherical.phi, 1.1, 1.45);
+    _endSpherical.phi = THREE.MathUtils.clamp(_endSpherical.phi, 1.1, 1.5);
     const tween = this._tweenView(this.focus.target, _endSpherical, duration);
     tween.eventCallback('onComplete', () => {
       this.controls.enabled = this.interactive && !this.paused;

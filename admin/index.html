@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0a0d14" />
+    <title>Quản trị · Cây Câu Hỏi</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0d14'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ffd27a'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body>
+    <div class="boot" data-view="boot">Đang tải…</div>
+
+    <!-- Đăng nhập -->
+    <main class="login" data-view="login" hidden>
+      <form class="login__card" data-login-form novalidate>
+        <p class="eyebrow">Cây Câu Hỏi</p>
+        <h1 class="login__title">Đăng nhập quản trị</h1>
+        <p class="login__lead">Quản lý câu hỏi và quà tặng của trò chơi.</p>
+        <label class="field">
+          <span class="field__label">Tên đăng nhập</span>
+          <input name="username" autocomplete="username" required autofocus />
+        </label>
+        <label class="field">
+          <span class="field__label">Mật khẩu</span>
+          <input name="password" type="password" autocomplete="current-password" required />
+        </label>
+        <p class="form-message" data-login-message role="alert" hidden></p>
+        <button class="btn btn--primary btn--block" type="submit">Đăng nhập</button>
+      </form>
+    </main>
+
+    <!-- Ứng dụng quản trị -->
+    <div class="app" data-view="app" hidden>
+      <header class="topbar">
+        <div class="topbar__brand">
+          <span class="topbar__dot" aria-hidden="true"></span>
+          <span>Quản trị Cây Câu Hỏi</span>
+        </div>
+        <nav class="tabs" aria-label="Nội dung quản lý">
+          <button class="tab" type="button" data-tab="questions" aria-current="page">Câu hỏi <span class="tab__count" data-count="questions">0</span></button>
+          <button class="tab" type="button" data-tab="gifts">Quà tặng <span class="tab__count" data-count="gifts">0</span></button>
+        </nav>
+        <div class="topbar__actions">
+          <a class="btn btn--ghost btn--small" href="/" target="_blank" rel="noopener">Xem trò chơi ↗</a>
+          <button class="btn btn--ghost btn--small" type="button" data-change-password>Đổi mật khẩu</button>
+          <button class="btn btn--ghost btn--small" type="button" data-logout>Đăng xuất <span class="topbar__user" data-user></span></button>
+        </div>
+      </header>
+
+      <!-- Câu hỏi -->
+      <section class="panel" data-panel="questions">
+        <div class="toolbar">
+          <label class="search">
+            <span class="visually-hidden">Tìm câu hỏi</span>
+            <input type="search" placeholder="Tìm theo nội dung, đáp án hoặc mã…" data-search />
+          </label>
+          <label>
+            <span class="visually-hidden">Lọc theo chủ đề</span>
+            <select data-category-filter></select>
+          </label>
+          <span class="toolbar__spacer"></span>
+          <button class="btn btn--ghost" type="button" data-import>Nhập file</button>
+          <button class="btn btn--ghost" type="button" data-export="questions">Xuất file</button>
+          <button class="btn btn--primary" type="button" data-add-question>+ Thêm câu hỏi</button>
+        </div>
+        <p class="panel__summary" data-question-summary></p>
+        <div class="table-wrap">
+          <table class="table table--questions">
+            <thead>
+              <tr>
+                <th scope="col" class="col-num">#</th>
+                <th scope="col">Câu hỏi</th>
+                <th scope="col" class="col-cat">Chủ đề</th>
+                <th scope="col" class="col-answer">Đáp án đúng</th>
+                <th scope="col" class="col-actions"><span class="visually-hidden">Thao tác</span></th>
+              </tr>
+            </thead>
+            <tbody data-question-rows></tbody>
+          </table>
+        </div>
+        <input type="file" accept="application/json,.json" data-import-file hidden />
+      </section>
+
+      <!-- Quà tặng -->
+      <section class="panel" data-panel="gifts" hidden>
+        <div class="toolbar">
+          <p class="toolbar__note">Mỗi câu trả lời đúng được bốc 1 món. Tỉ lệ trúng = trọng số của món ÷ tổng trọng số.</p>
+          <span class="toolbar__spacer"></span>
+          <button class="btn btn--ghost" type="button" data-export="gifts">Xuất file</button>
+          <button class="btn btn--primary" type="button" data-add-gift>+ Thêm quà</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table table--gifts">
+            <thead>
+              <tr>
+                <th scope="col" class="col-icon"><span class="visually-hidden">Biểu tượng</span></th>
+                <th scope="col">Tên quà</th>
+                <th scope="col" class="col-weight">Trọng số</th>
+                <th scope="col" class="col-chance">Tỉ lệ trúng</th>
+                <th scope="col" class="col-actions"><span class="visually-hidden">Thao tác</span></th>
+              </tr>
+            </thead>
+            <tbody data-gift-rows></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <dialog class="dialog" data-dialog></dialog>
+    <dialog class="dialog dialog--small" data-confirm></dialog>
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+
+    <script type="module" src="./admin.js"></script>
+  </body>
+</html>

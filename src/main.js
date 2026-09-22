@@ -1,5 +1,9 @@
+// Font tự lưu trữ (Inter + Space Grotesk, giấy phép OFL) — không phụ thuộc Google Fonts.
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
 import gsap from 'gsap';
 import { Scene3D } from './Scene3D.js';
+import { CityBackdrop } from './CityBackdrop.js';
 import { TreeLoader } from './TreeLoader.js';
 import { QuizData, QuizProgress } from './data/QuizData.js';
 import { LeafLayer } from './LeafLayer.js';
@@ -72,6 +76,13 @@ async function init() {
   const stage = new Scene3D(dom.canvas);
   const quiz = new QuizData();
   const progress = new QuizProgress();
+
+  // Phông nền thành phố đêm tím neon 360°; sương dùng cùng tông để cây hoà vào khung cảnh.
+  const backdrop = new CityBackdrop();
+  stage.scene.add(backdrop.mesh);
+  stage.scene.background = backdrop.fogColor.clone();
+  stage.scene.fog.color.copy(backdrop.fogColor);
+  stage.onTick((elapsed) => backdrop.update(elapsed));
   stage.start();
 
   dom.hintText.textContent = stage.device.isTouch ? HINT_TEXT.touch : HINT_TEXT.pointer;
